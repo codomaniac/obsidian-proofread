@@ -1,14 +1,15 @@
-import type { EditorView } from "@codemirror/view";
+import { EditorView } from "@codemirror/view";
 import { MarkdownView, Notice, Plugin, TFile, debounce } from "obsidian";
 
 import { anchorFindings } from "./findings/anchor.ts";
 import type { Finding } from "./findings/schema.ts";
 import { readSidecar, sidecarModified, sidecarPath } from "./findings/sidecar.ts";
-import { FindingStore } from "./findings/store.ts";
+import { FindingStore, type FindingStatus } from "./findings/store.ts";
 import { findingHover } from "./editor/hover.ts";
-import { proofreadPin } from "./editor/pin.ts";
+import { pinFinding, proofreadPin } from "./editor/pin.ts";
 import { type EditorFinding, findingDecorations, findingsField, setFindings } from "./editor/state.ts";
 import { DEFAULT_SETTINGS, type ProofreadSettings } from "./settings.ts";
+import { FindingsPanel, PANEL_VIEW_TYPE } from "./view/panel.ts";
 
 interface PluginData {
 	settings: Partial<ProofreadSettings>;
@@ -23,12 +24,15 @@ export default class ProofreadPlugin extends Plugin {
 	/** Sidecar mtimes already loaded, so polling only reads what changed. */
 	private loadedAt = new Map<string, number>();
 
-	/** Everything the last load held, decorated or not, for the panel to list. */
+	/** Everything the last report held, decorated or not, for the panel to list. */
 	report: Finding[] = [];
 	problems: string[] = [];
 	unanchored: string[] = [];
+	/** How many findings the editor is currently drawing. */
+	shown = 0;
 
 	private readonly persist = debounce(() => void this.saveState(), 400, true);
+	private readonly refreshSoon = debounce(() => this.refreshPanels(), 300, true);
 
 	override async onload(): Promise<void> {
 		await this.restore();
@@ -38,16 +42,20 @@ export default class ProofreadPlugin extends Plugin {
 			findingDecorations,
 			findingHover,
 			proofreadPin({
-				onResolve: (finding) => this.decide(finding, "resolve"),
-				onDismiss: (finding) => this.decide(finding, "dismiss"),
+				onResolve: (finding) => this.decide(finding, "resolved"),
+				onDismiss: (finding) => this.decide(finding, "dismissed"),
 			}),
 		]);
+
+		this.registerView(PANEL_VIEW_TYPE, (leaf) => new FindingsPanel(leaf, this));
 
 		this.registerEvent(
 			this.app.workspace.on("file-open", (file) => {
 				if (file) void this.loadFindings(file);
 			}),
 		);
+
+		this.registerEvent(this.app.workspace.on("editor-change", () => this.refreshSoon()));
 
 		this.registerEvent(
 			this.app.vault.on("rename", (file, oldPath) => {
@@ -80,6 +88,12 @@ export default class ProofreadPlugin extends Plugin {
 		});
 
 		this.addCommand({
+			id: "open-panel",
+			name: "Open the findings panel",
+			callback: () => void this.openPanel(),
+		});
+
+		this.addCommand({
 			id: "reopen-findings",
 			name: "Bring back resolved and dismissed findings for this note",
 			callback: () => {
@@ -107,13 +121,51 @@ export default class ProofreadPlugin extends Plugin {
 		await this.saveData({ settings: this.settings, files: this.store.toJSON() });
 	}
 
-	private decide(finding: Finding, what: "resolve" | "dismiss"): void {
-		const path = this.app.workspace.getActiveFile()?.path;
-		if (!path) return;
+	async openPanel(): Promise<void> {
+		const open = this.app.workspace.getLeavesOfType(PANEL_VIEW_TYPE);
+		if (open.length > 0) {
+			await this.app.workspace.revealLeaf(open[0]);
+			return;
+		}
 
-		if (what === "resolve") this.store.resolve(path, finding.id);
-		else this.store.dismiss(path, finding.id);
+		const leaf = this.app.workspace.getRightLeaf(false);
+		if (!leaf) return;
+		await leaf.setViewState({ type: PANEL_VIEW_TYPE, active: true });
+		await this.app.workspace.revealLeaf(leaf);
+	}
+
+	refreshPanels(): void {
+		for (const leaf of this.app.workspace.getLeavesOfType(PANEL_VIEW_TYPE)) {
+			if (leaf.view instanceof FindingsPanel) leaf.view.render();
+		}
+	}
+
+	/** Scrolls to a finding and opens its card. */
+	revealFinding(id: string): void {
+		const editor = this.editorView();
+		if (!editor) return;
+
+		const item = editor.state.field(findingsField).find((one) => one.finding.id === id);
+		if (!item) return;
+
+		editor.dispatch({
+			effects: [EditorView.scrollIntoView(item.from, { y: "center" }), pinFinding.of(id)],
+		});
+		editor.focus();
+	}
+
+	setStatus(path: string, id: string, status: FindingStatus): void {
+		if (status === "resolved") this.store.resolve(path, id);
+		else if (status === "dismissed") this.store.dismiss(path, id);
+		else this.store.reopen(path, id);
+
 		this.persist();
+		this.applyToEditor(path);
+	}
+
+	private decide(finding: Finding, status: FindingStatus): void {
+		const path = this.app.workspace.getActiveFile()?.path;
+		if (path) this.setStatus(path, finding.id, status);
 	}
 
 	/** The CodeMirror view behind the open note, when there is one. */
@@ -123,7 +175,30 @@ export default class ProofreadPlugin extends Plugin {
 		return (view.editor as unknown as { cm?: EditorView }).cm ?? null;
 	}
 
-	/** Reads the sidecar for `file`, anchors what it holds, and hands it to the editor. */
+	/** Anchors whatever is still open against the note as it reads now. */
+	private applyToEditor(path: string): void {
+		const editor = this.editorView();
+		if (!editor) return;
+
+		const open = this.report.filter((finding) => this.store.statusOf(path, finding.id) === "open");
+		const items: EditorFinding[] = [];
+		const unanchored: string[] = [];
+
+		for (const { finding, anchor } of anchorFindings(editor.state.doc.toString(), open)) {
+			if (!anchor) {
+				unanchored.push(finding.id);
+				continue;
+			}
+			items.push({ finding, from: anchor.from, to: anchor.to, edited: false });
+		}
+
+		this.unanchored = unanchored;
+		this.shown = items.length;
+		editor.dispatch({ effects: setFindings.of(items) });
+		this.refreshPanels();
+	}
+
+	/** Reads the sidecar for `file`, and hands what it holds to the editor. */
 	async loadFindings(file: TFile, announce = false): Promise<void> {
 		const editor = this.editorView();
 		if (!editor || this.app.workspace.getActiveFile()?.path !== file.path) return;
@@ -136,40 +211,28 @@ export default class ProofreadPlugin extends Plugin {
 			this.report = [];
 			this.problems = [];
 			this.unanchored = [];
+			this.shown = 0;
 			editor.dispatch({ effects: setFindings.of([]) });
+			this.refreshPanels();
 			if (announce) new Notice(`No proofread report at ${path}`);
 			return;
 		}
 
 		this.report = loaded.report.findings;
+		this.problems = loaded.problems;
+		this.loadedAt.set(file.path, loaded.modified);
+
 		this.store.pruneResolved(
 			file.path,
 			this.report.map((finding) => finding.id),
 		);
 		this.persist();
-
-		const source = editor.state.doc.toString();
-		const open = this.report.filter((finding) => this.store.statusOf(file.path, finding.id) === "open");
-
-		const items: EditorFinding[] = [];
-		const unanchored: string[] = [];
-
-		for (const { finding, anchor } of anchorFindings(source, open)) {
-			if (!anchor) {
-				unanchored.push(finding.id);
-				continue;
-			}
-			items.push({ finding, from: anchor.from, to: anchor.to, edited: false });
-		}
-
-		this.loadedAt.set(file.path, loaded.modified);
-		this.problems = loaded.problems;
-		this.unanchored = unanchored;
-		editor.dispatch({ effects: setFindings.of(items) });
+		this.applyToEditor(file.path);
 
 		if (announce) {
-			const missed = unanchored.length > 0 ? `, ${unanchored.length} no longer in the note` : "";
-			new Notice(`${items.length} findings${missed}`);
+			const missed =
+				this.unanchored.length > 0 ? `, ${this.unanchored.length} no longer in the note` : "";
+			new Notice(`${this.shown} findings${missed}`);
 		}
 	}
 

@@ -141,3 +141,93 @@
 	color: var(--text-faint);
 	font-size: var(--font-ui-smaller);
 }
+
+/* The panel: the same cards as a list, for working through in order. */
+.proofread-panel {
+	padding: 0.5rem 0.75rem 1rem;
+}
+
+.proofread-panel-head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.5rem;
+	padding-bottom: 0.5rem;
+	border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.proofread-count {
+	color: var(--text-muted);
+	font-size: var(--font-ui-small);
+}
+
+.proofread-panel-buttons {
+	display: flex;
+	align-items: center;
+	gap: 0.3rem;
+}
+
+.proofread-panel-buttons button {
+	font-size: var(--font-ui-smaller);
+}
+
+.proofread-problems {
+	margin-top: 0.4rem;
+	color: var(--text-warning);
+	font-size: var(--font-ui-smaller);
+}
+
+.proofread-group {
+	margin: 1rem 0 0.4rem;
+	color: var(--text-faint);
+	font-size: var(--font-ui-smaller);
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+
+.proofread-row {
+	margin-top: 0.5rem;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: var(--radius-s);
+	cursor: pointer;
+}
+
+.proofread-row:hover {
+	border-color: var(--background-modifier-border-hover);
+	background-color: var(--background-secondary);
+}
+
+/* Findings the note has moved on from: still listed, plainly not live. */
+.proofread-row-adrift,
+.proofread-row-resolved,
+.proofread-row-dismissed {
+	cursor: default;
+	opacity: 0.6;
+}
+
+.proofread-adrift-note {
+	color: var(--text-faint);
+	font-size: var(--font-ui-smaller);
+	font-style: italic;
+}
+
+.proofread-row .proofread-card {
+	max-width: none;
+	padding-bottom: 0.3rem;
+}
+
+.proofread-row-actions {
+	display: flex;
+	gap: 0.3rem;
+	padding: 0 0.8rem 0.7rem;
+}
+
+.proofread-row-actions button {
+	font-size: var(--font-ui-smaller);
+}
+
+.proofread-empty {
+	color: var(--text-faint);
+	font-size: var(--font-ui-small);
+}
