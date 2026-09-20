@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "node esbuild.config.mjs",
     "build": "tsc --noEmit && node esbuild.config.mjs production",
-    "test": "node --test test/"
+    "test": "node --test \"test/**/*.test.ts\""
   },
   "keywords": [],
   "author": "Piotr Rusin",
