@@ -47,7 +47,7 @@ export class FindingsPanel extends ItemView {
 		const items = this.plugin.editorView()?.state.field(findingsField) ?? [];
 		const byId = new Map(items.map((item) => [item.finding.id, item]));
 
-		return this.plugin.report.map((finding) => ({
+		return this.plugin.visibleReport().map((finding) => ({
 			finding,
 			status: this.plugin.store.statusOf(path, finding.id),
 			item: byId.get(finding.id),

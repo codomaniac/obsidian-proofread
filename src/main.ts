@@ -10,6 +10,7 @@ import { pinFinding, proofreadPin } from "./editor/pin.ts";
 import { type EditorFinding, findingDecorations, findingsField, setFindings } from "./editor/state.ts";
 import { DEFAULT_SETTINGS, type ProofreadSettings } from "./settings.ts";
 import { FindingsPanel, PANEL_VIEW_TYPE } from "./view/panel.ts";
+import { ProofreadSettingTab } from "./view/settings-tab.ts";
 
 interface PluginData {
 	settings: Partial<ProofreadSettings>;
@@ -31,6 +32,8 @@ export default class ProofreadPlugin extends Plugin {
 	/** How many findings the editor is currently drawing. */
 	shown = 0;
 
+	private lastPoll = 0;
+
 	private readonly persist = debounce(() => void this.saveState(), 400, true);
 	private readonly refreshSoon = debounce(() => this.refreshPanels(), 300, true);
 
@@ -48,6 +51,7 @@ export default class ProofreadPlugin extends Plugin {
 		]);
 
 		this.registerView(PANEL_VIEW_TYPE, (leaf) => new FindingsPanel(leaf, this));
+		this.addSettingTab(new ProofreadSettingTab(this.app, this));
 
 		this.registerEvent(
 			this.app.workspace.on("file-open", (file) => {
@@ -74,9 +78,7 @@ export default class ProofreadPlugin extends Plugin {
 			}),
 		);
 
-		this.registerInterval(
-			window.setInterval(() => void this.poll(), Math.max(1, this.settings.pollSeconds) * 1000),
-		);
+		this.registerInterval(window.setInterval(() => void this.poll(), 1000));
 
 		this.addCommand({
 			id: "reload-findings",
@@ -121,17 +123,17 @@ export default class ProofreadPlugin extends Plugin {
 		await this.saveData({ settings: this.settings, files: this.store.toJSON() });
 	}
 
-	async openPanel(): Promise<void> {
+	async openPanel(focus = true): Promise<void> {
 		const open = this.app.workspace.getLeavesOfType(PANEL_VIEW_TYPE);
 		if (open.length > 0) {
-			await this.app.workspace.revealLeaf(open[0]);
+			if (focus) await this.app.workspace.revealLeaf(open[0]);
 			return;
 		}
 
 		const leaf = this.app.workspace.getRightLeaf(false);
 		if (!leaf) return;
-		await leaf.setViewState({ type: PANEL_VIEW_TYPE, active: true });
-		await this.app.workspace.revealLeaf(leaf);
+		await leaf.setViewState({ type: PANEL_VIEW_TYPE, active: focus });
+		if (focus) await this.app.workspace.revealLeaf(leaf);
 	}
 
 	refreshPanels(): void {
@@ -175,12 +177,25 @@ export default class ProofreadPlugin extends Plugin {
 		return (view.editor as unknown as { cm?: EditorView }).cm ?? null;
 	}
 
+	/** The findings of a kind the author has asked to see. */
+	visibleReport(): Finding[] {
+		return this.report.filter((finding) => this.settings.show[finding.category]);
+	}
+
+	/** Re-anchors the open note after a setting changed what it should show. */
+	reapply(): void {
+		const path = this.app.workspace.getActiveFile()?.path;
+		if (path) this.applyToEditor(path);
+	}
+
 	/** Anchors whatever is still open against the note as it reads now. */
 	private applyToEditor(path: string): void {
 		const editor = this.editorView();
 		if (!editor) return;
 
-		const open = this.report.filter((finding) => this.store.statusOf(path, finding.id) === "open");
+		const open = this.visibleReport().filter(
+			(finding) => this.store.statusOf(path, finding.id) === "open",
+		);
 		const items: EditorFinding[] = [];
 		const unanchored: string[] = [];
 
@@ -229,6 +244,8 @@ export default class ProofreadPlugin extends Plugin {
 		this.persist();
 		this.applyToEditor(file.path);
 
+		if (this.settings.autoOpenPanel && this.shown > 0) await this.openPanel(false);
+
 		if (announce) {
 			const missed =
 				this.unanchored.length > 0 ? `, ${this.unanchored.length} no longer in the note` : "";
@@ -238,6 +255,13 @@ export default class ProofreadPlugin extends Plugin {
 
 	/** Obsidian fires no vault events for a dot-folder, so the mtime is the signal. */
 	private async poll(): Promise<void> {
+		const seconds = this.settings.pollSeconds;
+		if (seconds <= 0) return;
+
+		const now = Date.now();
+		if (now - this.lastPoll < seconds * 1000) return;
+		this.lastPoll = now;
+
 		const file = this.app.workspace.getActiveFile();
 		if (!file) return;
 
