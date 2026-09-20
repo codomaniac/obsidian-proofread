@@ -7,5 +7,6 @@
 		"url": "https://codomaniac.com"
 	},
 	"homepage": "https://github.com/codomaniac/obsidian-proofread",
+	"license": "MIT",
 	"keywords": ["obsidian", "proofreading", "writing"]
 }
