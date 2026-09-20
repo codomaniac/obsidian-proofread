@@ -170,11 +170,24 @@ export default class ProofreadPlugin extends Plugin {
 		if (path) this.setStatus(path, finding.id, status);
 	}
 
-	/** The CodeMirror view behind the open note, when there is one. */
+	/**
+	 * The CodeMirror view behind the open note.
+	 *
+	 * Found by matching the active file rather than by asking for the active
+	 * view: clicking a button in the panel makes the sidebar leaf active, and
+	 * the note would stop being reachable from its own findings.
+	 */
 	editorView(): EditorView | null {
-		const view = this.app.workspace.getActiveViewOfType(MarkdownView);
-		if (!view) return null;
-		return (view.editor as unknown as { cm?: EditorView }).cm ?? null;
+		const path = this.app.workspace.getActiveFile()?.path;
+		if (!path) return null;
+
+		for (const leaf of this.app.workspace.getLeavesOfType("markdown")) {
+			const view = leaf.view;
+			if (view instanceof MarkdownView && view.file?.path === path) {
+				return (view.editor as unknown as { cm?: EditorView }).cm ?? null;
+			}
+		}
+		return null;
 	}
 
 	/** The findings of a kind the author has asked to see. */
