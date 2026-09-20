@@ -19,8 +19,7 @@ export const findingHover = hoverTooltip(
 			end: innermost.to,
 			above: true,
 			create: () => {
-				const dom = document.createElement("div");
-				dom.className = "proofread-card proofread-card-hover";
+				const dom = createDiv({ cls: "proofread-card proofread-card-hover" });
 				renderCard(dom, innermost.finding, here.length - 1);
 				return { dom };
 			},

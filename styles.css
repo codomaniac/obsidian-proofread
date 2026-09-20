@@ -1,10 +1,7 @@
 /* Underlines rather than fills: a highlight sits under prose the author is
    still reading, and a block of colour makes that harder, not easier. */
 .proofread-finding {
-	text-decoration-line: underline;
-	text-decoration-style: wavy;
-	text-decoration-color: var(--proofread-color);
-	text-decoration-skip-ink: none;
+	text-decoration: underline wavy var(--proofread-color);
 	text-underline-offset: 0.22em;
 	cursor: pointer;
 }

@@ -46,8 +46,7 @@ function siblings(items: readonly EditorFinding[], item: EditorFinding): EditorF
 }
 
 function buildView(view: EditorView, id: string): TooltipView {
-	const dom = document.createElement("div");
-	dom.className = "proofread-card proofread-card-pinned";
+	const dom = createDiv({ cls: "proofread-card proofread-card-pinned" });
 
 	const handlers = view.state.facet(pinHandlers);
 	const item = itemById(view.state.field(findingsField), id);
