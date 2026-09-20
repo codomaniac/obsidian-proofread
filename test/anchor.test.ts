@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
-import { anchorFindings, anchorStillMatches, normalizeDocument } from "../src/findings/anchor.ts";
+import { anchorFindings, fragmentMatches, normalizeDocument } from "../src/findings/anchor.ts";
 import type { Finding } from "../src/findings/schema.ts";
 
 function finding(fragment: string, extra: Partial<Finding> = {}): Finding {
@@ -69,12 +69,13 @@ test("quote marks around the fragment are not part of it", () => {
 	assert.equal(anchored("It was very useful.", finding('"very useful"')), "very useful");
 });
 
-test("anchorStillMatches notices the author fixing it", () => {
-	const before = "It was very useful.";
-	const [result] = anchorFindings(before, [finding("very useful")]);
-	assert.ok(result.anchor);
-	assert.ok(anchorStillMatches(before, result.anchor, "very useful"));
-	assert.equal(anchorStillMatches("It was useful.", result.anchor, "very useful"), false);
+test("fragmentMatches notices the author fixing it", () => {
+	assert.ok(fragmentMatches("very  useful", "very useful"));
+	assert.equal(fragmentMatches("useful", "very useful"), false);
+});
+
+test("fragmentMatches accepts an ellipsis quote it cannot compare whole", () => {
+	assert.ok(fragmentMatches("In order to see the point, read on", "In order to ... read on"));
 });
 
 test("line starts are counted in source offsets", () => {

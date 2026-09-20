@@ -1,0 +1,29 @@
+/* Underlines rather than fills: a highlight sits under prose the author is
+   still reading, and a block of colour makes that harder, not easier. */
+.proofread-finding {
+	text-decoration-line: underline;
+	text-decoration-style: wavy;
+	text-decoration-color: var(--proofread-color);
+	text-decoration-skip-ink: none;
+	text-underline-offset: 0.22em;
+	cursor: pointer;
+}
+
+.proofread-finding:hover {
+	background-color: var(--proofread-color);
+	border-radius: 2px;
+}
+
+/* The three things the skill reports, in the theme's own colours so the
+   underlines follow light and dark without a second palette here. */
+.proofread-mechanical {
+	--proofread-color: var(--text-error);
+}
+
+.proofread-vocabulary {
+	--proofread-color: var(--text-accent);
+}
+
+.proofread-clutter {
+	--proofread-color: var(--text-warning);
+}

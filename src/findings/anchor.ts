@@ -209,9 +209,9 @@ export function anchorFindings(source: string, findings: Finding[]): AnchoredFin
 	});
 }
 
-/** True while the note still reads the way the finding says it does. */
-export function anchorStillMatches(source: string, anchor: Anchor, fragment: string): boolean {
-	const inNote = normalizeText(source.slice(anchor.from, anchor.to));
+/** True while the text still reads the way the finding says it does. */
+export function fragmentMatches(text: string, fragment: string): boolean {
+	const inNote = normalizeText(text);
 	const quoted = normalizeText(unquote(fragment));
 	if (inNote === quoted) return true;
 

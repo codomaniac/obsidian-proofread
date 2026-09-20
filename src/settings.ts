@@ -1,0 +1,13 @@
+export interface ProofreadSettings {
+	/** Vault-relative folder the sidecar reports live in. Dot-prefixed, so
+	 * Obsidian keeps it out of the file explorer and out of search. */
+	sidecarFolder: string;
+	/** How often to restat the sidecar of the open note. Obsidian fires no
+	 * vault events for dot-folders, so there is nothing to subscribe to. */
+	pollSeconds: number;
+}
+
+export const DEFAULT_SETTINGS: ProofreadSettings = {
+	sidecarFolder: ".proofread",
+	pollSeconds: 2,
+};
