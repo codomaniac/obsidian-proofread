@@ -1,0 +1,11 @@
+{
+	"name": "proofread-report",
+	"description": "Proofread a note and write the findings to the JSON report the Obsidian Proofread plugin reads.",
+	"version": "0.1.0",
+	"author": {
+		"name": "Piotr Rusin",
+		"url": "https://codomaniac.com"
+	},
+	"homepage": "https://github.com/codomaniac/obsidian-proofread",
+	"keywords": ["obsidian", "proofreading", "writing"]
+}
