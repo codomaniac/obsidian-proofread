@@ -9,9 +9,17 @@
 	cursor: pointer;
 }
 
+/* A tint, not a fill: the words under a highlight still have to be read.
+   The flat fallback covers Electron builds without color-mix. */
 .proofread-finding:hover {
-	background-color: var(--proofread-color);
+	background-color: var(--background-modifier-hover);
 	border-radius: 2px;
+}
+
+@supports (background-color: color-mix(in srgb, red 10%, transparent)) {
+	.proofread-finding:hover {
+		background-color: color-mix(in srgb, var(--proofread-color) 18%, transparent);
+	}
 }
 
 /* The three things the skill reports, in the theme's own colours so the
@@ -48,11 +56,13 @@
 	margin-bottom: 0.45rem;
 }
 
+/* Outlined rather than filled. A filled chip needs a foreground colour that
+   works on all three backgrounds in both themes, and yellow has none. */
 .proofread-chip {
 	padding: 0.05rem 0.4rem;
+	border: 1px solid var(--proofread-color);
 	border-radius: 0.6rem;
-	background-color: var(--proofread-color);
-	color: var(--text-on-accent);
+	color: var(--proofread-color);
 	font-size: var(--font-ui-smaller);
 	letter-spacing: 0.04em;
 	text-transform: uppercase;
