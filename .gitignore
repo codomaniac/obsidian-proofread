@@ -1,0 +1,8 @@
+node_modules/
+
+# Build output, shipped in releases rather than committed.
+main.js
+*.js.map
+
+# Obsidian writes the plugin's own settings here when it is installed in a vault.
+data.json
