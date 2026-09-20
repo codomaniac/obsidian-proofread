@@ -1,17 +1,19 @@
 ---
-name: proofread-report
+name: proofread
 description: Proofread a note and write the findings to the JSON report the Obsidian Proofread plugin reads, instead of listing them in the conversation. Use when proofreading a note in an Obsidian vault that has the plugin installed, or when asked for a proofread report file.
 ---
 
 # Proofreading into a report file
 
-Proofread exactly as the `proofread` skill says — same three things reported, same
-hard limits, same refusal to edit the file. This skill changes only where the report
-goes: into a JSON file the plugin reads, rather than into the conversation.
+Proofread exactly as the standalone proofreading skill says — same three things
+reported, same hard limits, same refusal to edit the file. This skill changes only
+where the report goes: into a JSON file the plugin reads, rather than into the
+conversation.
 
-If the `proofread` skill is not installed, read it first from
-<https://github.com/codomaniac/resources/tree/main/skills/proofread>. Its rules are
-the substance of the job; what follows is only the format.
+That skill is `claude-proofread@codomaniac`. If it is not installed, read it first
+from
+<https://github.com/codomaniac/skills/tree/main/plugins/claude-proofread/skills/proofread>.
+Its rules are the substance of the job; what follows is only the format.
 
 ## Where it goes
 

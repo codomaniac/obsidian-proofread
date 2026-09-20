@@ -56,10 +56,10 @@ out of the file explorer, out of search and out of Obsidian's file index.
 A malformed finding is dropped and counted rather than costing the run; the panel
 says how many.
 
-Anything can write that file. `skills/proofread-report/SKILL.md` is a Claude Code
-skill that does, by following the [`proofread`
-skill](https://github.com/codomaniac/resources/tree/main/skills/proofread) and
-writing the result out instead of listing it.
+Anything can write that file. `skills/proofread/SKILL.md` is a Claude Code skill
+that does, by following the [standalone proofreading
+skill](https://github.com/codomaniac/skills) and writing the result out instead of
+listing it.
 
 ## Using it
 
