@@ -27,3 +27,72 @@
 .proofread-clutter {
 	--proofread-color: var(--text-warning);
 }
+
+/* The card, shown on hover and again — editable — on click. */
+.proofread-card {
+	max-width: 22rem;
+	padding: 0.7rem 0.8rem;
+	font-size: var(--font-ui-small);
+	line-height: 1.45;
+	color: var(--text-normal);
+}
+
+.proofread-card-hover {
+	background-color: var(--background-secondary);
+}
+
+.proofread-card-head {
+	display: flex;
+	align-items: baseline;
+	gap: 0.45rem;
+	margin-bottom: 0.45rem;
+}
+
+.proofread-chip {
+	padding: 0.05rem 0.4rem;
+	border-radius: 0.6rem;
+	background-color: var(--proofread-color);
+	color: var(--text-on-accent);
+	font-size: var(--font-ui-smaller);
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+
+.proofread-chip-mechanical {
+	--proofread-color: var(--text-error);
+}
+
+.proofread-chip-vocabulary {
+	--proofread-color: var(--text-accent);
+}
+
+.proofread-chip-clutter {
+	--proofread-color: var(--text-warning);
+}
+
+.proofread-rule {
+	color: var(--text-muted);
+	font-style: italic;
+}
+
+/* Shorthand margins keep the quote and the note flush with the card's edge. */
+.proofread-card blockquote.proofread-fragment {
+	margin: 0 0 0.45rem;
+	padding-left: 0.6rem;
+	border-left: 2px solid var(--background-modifier-border);
+	color: var(--text-muted);
+	font-family: var(--font-text);
+}
+
+.proofread-card p {
+	margin: 0 0 0.35rem;
+}
+
+.proofread-card p:last-child {
+	margin-bottom: 0;
+}
+
+.proofread-also {
+	color: var(--text-faint);
+	font-size: var(--font-ui-smaller);
+}

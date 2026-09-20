@@ -3,6 +3,7 @@ import { MarkdownView, Notice, Plugin, type TFile } from "obsidian";
 
 import { anchorFindings } from "./findings/anchor.ts";
 import { readSidecar, sidecarModified, sidecarPath } from "./findings/sidecar.ts";
+import { findingHover } from "./editor/hover.ts";
 import { type EditorFinding, findingDecorations, findingsField, setFindings } from "./editor/state.ts";
 import { DEFAULT_SETTINGS, type ProofreadSettings } from "./settings.ts";
 
@@ -19,7 +20,7 @@ export default class ProofreadPlugin extends Plugin {
 	override async onload(): Promise<void> {
 		await this.loadSettings();
 
-		this.registerEditorExtension([findingsField, findingDecorations]);
+		this.registerEditorExtension([findingsField, findingDecorations, findingHover]);
 
 		this.registerEvent(
 			this.app.workspace.on("file-open", (file) => {
