@@ -91,3 +91,10 @@ npm run dev       # rebuild on change
 
 To install it into a vault, copy `main.js`, `manifest.json` and `styles.css` into
 `<vault>/.obsidian/plugins/proofread/`, or symlink the repo there.
+
+## Releasing it
+
+Bump the version in `manifest.json`, `package.json` and `versions.json`, write the
+changelog entry, and push a tag named for the version, without a `v`. The release
+workflow builds the plugin, checks the manifest against the tag, and publishes the
+three files with that changelog entry as the notes.
