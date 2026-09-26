@@ -4,6 +4,7 @@ const CATEGORY_LABELS: Record<Finding["category"], string> = {
 	mechanical: "mechanical",
 	vocabulary: "vocabulary",
 	clutter: "clutter",
+	clarity: "clarity",
 };
 
 /**

@@ -19,8 +19,9 @@
 	}
 }
 
-/* The three things the skill reports, in the theme's own colours so the
-   underlines follow light and dark without a second palette here. */
+/* The four things the skill reports, in the theme's own colours so the
+   underlines follow light and dark without a second palette here. Clarity
+   takes the extended blue: the theme has no fourth semantic text colour. */
 .proofread-mechanical {
 	--proofread-color: var(--text-error);
 }
@@ -31,6 +32,10 @@
 
 .proofread-clutter {
 	--proofread-color: var(--text-warning);
+}
+
+.proofread-clarity {
+	--proofread-color: var(--color-blue);
 }
 
 /* The card, shown on hover and again — editable — on click. */
@@ -75,6 +80,10 @@
 
 .proofread-chip-clutter {
 	--proofread-color: var(--text-warning);
+}
+
+.proofread-chip-clarity {
+	--proofread-color: var(--color-blue);
 }
 
 .proofread-rule {

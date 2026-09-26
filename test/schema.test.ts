@@ -41,6 +41,22 @@ test("parseReport keeps the good findings and reports the rest", () => {
 	assert.equal(problems.length, 3);
 });
 
+test("every category the skill writes is read", () => {
+	const { report, problems } = parseReport({
+		findings: [
+			{ category: "mechanical", rule: "article", fragment: "a" },
+			{ category: "vocabulary", rule: "one word for the clause", fragment: "b" },
+			{ category: "clutter", rule: "qualifier", fragment: "c" },
+			{ category: "clarity", rule: "character", fragment: "d" },
+		],
+	});
+	assert.deepEqual(
+		report?.findings.map((finding) => finding.category),
+		["mechanical", "vocabulary", "clutter", "clarity"],
+	);
+	assert.deepEqual(problems, []);
+});
+
 test("occurrence defaults to the first and survives a bad value", () => {
 	const { report } = parseReport({
 		findings: [{ category: "clutter", rule: "clutter", fragment: "in order to", occurrence: 0 }],

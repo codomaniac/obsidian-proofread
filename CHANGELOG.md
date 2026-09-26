@@ -2,13 +2,14 @@
 
 Newest first. Each entry: what changed and why, three sentences at most.
 
-## 2026-09-26 — The skill carries Williams's lessons
+## 2026-09-26 — 0.3.0: a fourth kind of finding, from Williams
 
 The proofread skill deferred to a standalone skill that no longer exists, so it now
-states its own rules, and adds the sentence-level ones from Williams's *Style:
-Lessons in Clarity and Grace*: characters as subjects, actions as verbs, openers,
-interruptions, tails, hedges and intensifiers, and the cases where each is fine as it
-stands. The plugin is unchanged; the new findings are `clutter`, with new rule names.
+states its own rules and adds the ones from Williams's *Style: Lessons in Clarity
+and Grace*. The sentence-level ones — a subject that is not the character, an
+opener, an interruption, a tail — are a fourth category, `clarity`, drawn in blue,
+because they are not words to cut. A `show` map saved by an earlier version no
+longer hides a kind it never knew about.
 
 ## 2026-09-20 — 0.2.0: clear the directory review
 

@@ -8,7 +8,7 @@ export interface ProofreadSettings {
 	 * Obsidian fires no vault events for dot-folders, so there is nothing to
 	 * subscribe to. */
 	pollSeconds: number;
-	/** Which of the three kinds to draw. */
+	/** Which of the four kinds to draw. */
 	show: Record<FindingCategory, boolean>;
 	/** Open the panel by itself when a note turns out to have findings. */
 	autoOpenPanel: boolean;
@@ -17,6 +17,6 @@ export interface ProofreadSettings {
 export const DEFAULT_SETTINGS: ProofreadSettings = {
 	sidecarFolder: ".proofread",
 	pollSeconds: 2,
-	show: { mechanical: true, vocabulary: true, clutter: true },
+	show: { mechanical: true, vocabulary: true, clutter: true, clarity: true },
 	autoOpenPanel: false,
 };

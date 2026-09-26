@@ -13,7 +13,7 @@ finding offers a word and its definition — never a rewritten sentence.
 A proofread run leaves a JSON report per note under `.proofread/`. The plugin reads
 the report for whichever note is open, anchors each finding to the text it quotes,
 and underlines it: red for mechanical errors, accent for a word being talked around,
-yellow for clutter.
+yellow for clutter, blue for a sentence that is unclear.
 
 Findings are anchored by the quoted fragment, not by line number — a model's line
 numbers drift, and the note moves under them anyway. Positions are then mapped
@@ -45,8 +45,8 @@ out of the file explorer, out of search and out of Obsidian's file index.
 
 | Field | |
 | --- | --- |
-| `category` | `mechanical`, `vocabulary` or `clutter` |
-| `rule` | the named principle — `article`, `qualifier`, `nominalization` |
+| `category` | `mechanical`, `vocabulary`, `clutter` or `clarity` |
+| `rule` | the named principle — `article`, `qualifier`, `nominalization`, `character` |
 | `fragment` | text quoted from the note; the anchor. `...` stands for text skipped |
 | `occurrence` | which occurrence of `fragment`, 1-based |
 | `line` | 1-based, a tie-breaker only |

@@ -13,7 +13,7 @@ on the text it quotes and shows the rule behind it on hover. Every finding is a
 lesson: the point is that the author stops making the mistake, not that this instance
 gets fixed.
 
-Three things go into the report, and nothing else.
+Four things go into the report, and nothing else.
 
 ## 1. Mechanical errors
 
@@ -43,11 +43,11 @@ When a sentence spends a clause describing something a single word already cover
 name that word and give its dictionary definition, so the author's active vocabulary
 grows over time. Offer the word — do not rewrite the sentence around it.
 
-## 3. Clutter and unclear sentences
+## 3. Clutter
 
-Point at words that can come out, and at sentences a reader has to work to follow.
-Every finding names the specific word or phrase and the principle it violates. This
-is a closed checklist, not an invitation to comment on the writing in general.
+Point at words that can come out. Every finding names the specific word or phrase
+and the principle it violates. This is a closed checklist, not an invitation to
+comment on the writing in general.
 
 ### By Zinsser, *On Writing Well*
 
@@ -67,8 +67,9 @@ is a closed checklist, not an invitation to comment on the writing in general.
   in an `-ness`/`-ity` one — `made a decision` for `decided`, `performed an
   evaluation` for `evaluated`, `the applicability of` for `applies`. Williams's
   patterns, below, say where to look.
-- *Passive voice* where an active verb would carry the sentence. Williams's test,
-  below, says when it would.
+- *Passive voice* where an active verb would carry the sentence. Williams's test:
+  flag it when the doer is a character the reader knows and putting it first would
+  make a shorter, more direct sentence.
 - *Redundancy.* A word implied by its neighbour: `personal friend`, `free gift`, `end
   result`, `past history`, `future plans`, `completely eliminate`. A pair where one
   word carries: `each and every`, `first and foremost`, `full and complete`, `any and
@@ -79,27 +80,49 @@ is a closed checklist, not an invitation to comment on the writing in general.
 
 ### By Williams, *Style: Lessons in Clarity and Grace*
 
+Williams's concision lesson adds to Zinsser's list. These are still words to cut:
+
+- *Negative.* A negation standing in for a word: `not many` for `few`, `not the
+  same` for `different`, `did not remember` for `forgot`, `not allow` for `prevent`,
+  `not include` for `omit`, `not often` for `rarely`. Two stacked: `not unless`, `not
+  fail to`. State it in the affirmative, unless the negation is the point, as in a
+  warning.
+- *Metadiscourse.* Writing about the writing: `it is important to note that`, `as I
+  mentioned above`, `in this section I will`, `I would like to point out`, `it should
+  be noted`. Flag it when the sentence says the same without it. A signpost a reader
+  needs is not clutter.
+- *Hedge.* `usually`, `often`, `almost`, `virtually`, `possibly`, `perhaps`,
+  `apparently`, `seemingly`, `somewhat`, `to some extent`, `may`, `might`, `seem`,
+  `tend`, `appear`, `suggest`. One hedge softens a claim that needs softening. Flag
+  the second on the same clause, and any hedge on a statement that is not a claim.
+- *Intensifier.* `clearly`, `obviously`, `undoubtedly`, `certainly`, `of course`,
+  `indeed`, `literally`, `invariably`, `always`, and adjectives that only insist:
+  `key`, `central`, `crucial`, `fundamental`, `essential`. The louder the
+  intensifier, the weaker the claim sounds: `clearly` in front of a statement invites
+  the reader to doubt it.
+- *Nominalization*, by pattern. As the subject of an empty verb: `The intention of
+  the committee is`. After `there is` / `there are`: `There is a need for review`.
+  Subject and object both: `Our lack of data prevented evaluation`. Two joined by a
+  preposition: `a review of the evolution of`. Fix the character first: cutting words
+  from a sentence built on nominalizations leaves the nominalizations standing.
+
+## 4. Unclear sentences
+
 Williams's diagnosis of prose that readers call dense or abstract: the sentence's
 main characters are not its subjects, and its main actions are not its verbs. His
 test is to look at the first seven or eight words of a sentence. If the subject is
 not a character, if the verb is not an action, or if the reader has not reached the
-verb yet, the sentence is one of these:
+verb yet, the sentence is one of these. Nothing here is a word to cut; each names
+something the reader is made to wait for.
 
 - *Character.* The subject is an abstraction while the one who acts hides in a
   possessive, an `of`-phrase, or nowhere: `The intention of the committee is to
   audit`, `Our lack of data prevented evaluation`, `The analysis was conducted`. Name
   the doer and the verb; the author moves them into place. Quote from the subject
   through the verb, because that is the range the author will retype.
-- *Nominalization*, by pattern. As the subject of an empty verb: `The intention of
-  the committee is`. After `there is` / `there are`: `There is a need for review`.
-  Subject and object both: `Our lack of data prevented evaluation`. Two joined by a
-  preposition: `a review of the evolution of`. Fix the character first: cutting words
-  from a sentence built on nominalizations leaves the nominalizations standing.
 - *There is.* `There is`, `There are`, `It is … that` delaying the subject: `There
   are three reasons that`. Flag it when it carries a nominalization or holds no new
   information back for the end of the sentence.
-- *Passive voice.* Flag it when the doer is a character the reader knows and putting
-  it first would make a shorter, more direct sentence.
 - *Noun stack.* Three or more nouns modifying one another: `early childhood thought
   disorder misdiagnosis`, `report generation pipeline failure`. Unpack from the last
   noun back. Two-noun compounds readers know (`file system`, `test suite`) are words.
@@ -119,24 +142,6 @@ verb yet, the sentence is one of these:
   such`, `at the present time`. The end of a sentence is its stress position. Say
   whether the tail should go, or move to the front so the sentence ends on what
   matters.
-- *Negative.* A negation standing in for a word: `not many` for `few`, `not the
-  same` for `different`, `did not remember` for `forgot`, `not allow` for `prevent`,
-  `not include` for `omit`, `not often` for `rarely`. Two stacked: `not unless`, `not
-  fail to`. State it in the affirmative, unless the negation is the point, as in a
-  warning.
-- *Metadiscourse.* Writing about the writing: `it is important to note that`, `as I
-  mentioned above`, `in this section I will`, `I would like to point out`, `it should
-  be noted`. Flag it when the sentence says the same without it. A signpost a reader
-  needs is not clutter.
-- *Hedge.* `usually`, `often`, `almost`, `virtually`, `possibly`, `perhaps`,
-  `apparently`, `seemingly`, `somewhat`, `to some extent`, `may`, `might`, `seem`,
-  `tend`, `appear`, `suggest`. One hedge softens a claim that needs softening. Flag
-  the second on the same clause, and any hedge on a statement that is not a claim.
-- *Intensifier.* `clearly`, `obviously`, `undoubtedly`, `certainly`, `of course`,
-  `indeed`, `literally`, `invariably`, `always`, and adjectives that only insist:
-  `key`, `central`, `crucial`, `fundamental`, `essential`. The louder the
-  intensifier, the weaker the claim sounds: `clearly` in front of a statement invites
-  the reader to doubt it.
 
 ### Leave it alone
 
@@ -158,11 +163,12 @@ is quieter for knowing them:
 
 One finding per fragment. When `character`, `nominalization` and `passive voice`
 would all land on the same words, report the one whose fix dissolves the rest, which
-is usually `character`.
+is usually `character`. The categories do not overlap either: a finding is `clutter`
+when the fix is to cut or swap a word, `clarity` when it is to move one.
 
 ### Hard limits
 
-- No stylistic feedback beyond the checklist above. Every item on it is a nameable
+- No stylistic feedback beyond the checklists above. Every item on them is a nameable
   rule with a word or phrase you can point at. Nothing about flow, tone, paragraphing,
   pacing, or "this would be stronger if…". Williams's lessons on coherence across
   paragraphs, on elegance and on ethics do not produce findings, because none of them
@@ -201,7 +207,7 @@ who types their own corrections.
       "note": "`very` weakens the word it was meant to strengthen."
     },
     {
-      "category": "clutter",
+      "category": "clarity",
       "rule": "character",
       "fragment": "The intention of the committee is",
       "occurrence": 1,
@@ -230,16 +236,16 @@ who types their own corrections.
 }
 ```
 
-- `category` — `mechanical`, `vocabulary` or `clutter`. Nothing else is read.
-  Williams's sentence-level findings are `clutter`: the category is everything about
-  the prose that is neither an error nor a missing word.
+- `category` — `mechanical`, `vocabulary`, `clutter` or `clarity`. Nothing else is
+  read. The plugin draws each in its own colour, and the author can switch any one
+  of them off, so a finding in the wrong category is a finding they may never see.
 - `rule` — the named principle, lowercase and short, spelled the way this file spells
   it: `article`, `preposition`, `agreement`, `comma`, `dangling modifier`; `one word
   for the clause`; `clutter`, `qualifier`, `adverb`, `long word`, `nominalization`,
-  `passive voice`, `redundancy`, `over-explaining`, `character`, `there is`, `noun
-  stack`, `opener`, `long subject`, `interruption`, `tail`, `negative`,
-  `metadiscourse`, `hedge`, `intensifier`. The same fault gets the same name every
-  run, so the author sees which rules keep coming back.
+  `passive voice`, `redundancy`, `over-explaining`, `negative`, `metadiscourse`,
+  `hedge`, `intensifier`; `character`, `there is`, `noun stack`, `opener`, `long
+  subject`, `interruption`, `tail`. The same fault gets the same name every run, so
+  the author sees which rules keep coming back.
 - `fragment` — text quoted from the note, and the only thing that anchors the
   finding. Quote the shortest run that is unique enough to find, and quote it
   **verbatim**: the plugin forgives straightened quotes, a collapsed line wrap and
