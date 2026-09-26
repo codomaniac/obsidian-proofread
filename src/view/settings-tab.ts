@@ -7,6 +7,7 @@ const CATEGORY_DESCRIPTIONS: Record<string, string> = {
 	mechanical: "Typos, articles, prepositions, agreement, commas.",
 	vocabulary: "A word the note is talking around.",
 	clutter: "Qualifiers, nominalizations, long words, redundancy.",
+	clarity: "A sentence whose subject is not its character, or whose verb is far away.",
 };
 
 const FOLDER_DESC =

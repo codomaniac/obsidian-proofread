@@ -1,7 +1,7 @@
 import { normalizeText } from "./text.ts";
 
-/** The three things the proofread skill reports, and nothing else. */
-export const CATEGORIES = ["mechanical", "vocabulary", "clutter"] as const;
+/** The four things the proofread skill reports, and nothing else. */
+export const CATEGORIES = ["mechanical", "vocabulary", "clutter", "clarity"] as const;
 
 export type FindingCategory = (typeof CATEGORIES)[number];
 
@@ -9,7 +9,7 @@ export interface Finding {
 	/** Stable across runs, so a dismissal survives re-proofreading. */
 	id: string;
 	category: FindingCategory;
-	/** The named principle: "article", "qualifier", "nominalization". */
+	/** The named principle: "article", "qualifier", "nominalization", "character". */
 	rule: string;
 	/** Text quoted from the note, as the anchor. */
 	fragment: string;

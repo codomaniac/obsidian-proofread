@@ -1,7 +1,7 @@
 {
   "id": "proofread",
   "name": "Proofread",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "minAppVersion": "1.7.2",
   "description": "Highlights proofreading findings in a note, with the rule behind each, and lets you fix them in place.",
   "author": "Piotr Rusin",

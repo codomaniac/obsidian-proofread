@@ -115,7 +115,13 @@ export default class ProofreadPlugin extends Plugin {
 
 	private async restore(): Promise<void> {
 		const data = ((await this.loadData()) ?? {}) as Partial<PluginData>;
-		this.settings = Object.assign({}, DEFAULT_SETTINGS, data.settings);
+		// A `show` map saved before a kind existed would hide that kind for good,
+		// so the saved map fills in over the default rather than replacing it.
+		this.settings = {
+			...DEFAULT_SETTINGS,
+			...data.settings,
+			show: { ...DEFAULT_SETTINGS.show, ...data.settings?.show },
+		};
 		this.store.load(data.files);
 	}
 
