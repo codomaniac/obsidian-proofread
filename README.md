@@ -97,4 +97,5 @@ To install it into a vault, copy `main.js`, `manifest.json` and `styles.css` int
 Bump the version in `manifest.json`, `package.json` and `versions.json`, write the
 changelog entry, and push a tag named for the version, without a `v`. The release
 workflow builds the plugin, checks the manifest against the tag, and publishes the
-three files with that changelog entry as the notes.
+three files with that changelog entry as the notes. Running the workflow by hand
+with the version does the same from the chosen branch, and creates the tag itself.

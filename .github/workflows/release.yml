@@ -1,11 +1,21 @@
 # Pushing a version tag (0.3.0, no `v`) builds the plugin and publishes the
 # release Obsidian installs from: main.js, manifest.json and styles.css, with
-# the changelog entry for that version as the notes.
+# the changelog entry for that version as the notes. Running it by hand with a
+# version does the same from the chosen branch, and cuts the tag itself.
 name: Release
 
 on:
   push:
     tags: ["[0-9]+.[0-9]+.[0-9]+"]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "The version to release, as manifest.json spells it"
+        required: true
+        type: string
+
+env:
+  TAG: ${{ inputs.version || github.ref_name }}
 
 permissions:
   contents: write
@@ -28,19 +38,19 @@ jobs:
       - name: Check that the manifest agrees with the tag
         run: |
           version=$(node -p "require('./manifest.json').version")
-          if [ "$version" != "$GITHUB_REF_NAME" ]; then
-            echo "manifest.json says $version, the tag says $GITHUB_REF_NAME"
+          if [ "$version" != "$TAG" ]; then
+            echo "manifest.json says $version, the release is $TAG"
             exit 1
           fi
 
       - name: Take the notes from the changelog
         run: |
-          awk -v tag="$GITHUB_REF_NAME" '
+          awk -v tag="$TAG" '
             /^## / { on = index($0, " — " tag ":") > 0; next }
             on { print }
           ' CHANGELOG.md | sed -e '/./,$!d' > notes.md
           if [ ! -s notes.md ]; then
-            echo "Release $GITHUB_REF_NAME." > notes.md
+            echo "Release $TAG." > notes.md
           fi
           cat notes.md
 
@@ -48,7 +58,8 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: >
-          gh release create "$GITHUB_REF_NAME"
-          --title "$GITHUB_REF_NAME"
+          gh release create "$TAG"
+          --target "$GITHUB_SHA"
+          --title "$TAG"
           --notes-file notes.md
           main.js manifest.json styles.css
