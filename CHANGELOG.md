@@ -2,6 +2,14 @@
 
 Newest first. Each entry: what changed and why, three sentences at most.
 
+## 2026-09-26 — The skill carries Williams's lessons
+
+The proofread skill deferred to a standalone skill that no longer exists, so it now
+states its own rules, and adds the sentence-level ones from Williams's *Style:
+Lessons in Clarity and Grace*: characters as subjects, actions as verbs, openers,
+interruptions, tails, hedges and intensifiers, and the cases where each is fine as it
+stands. The plugin is unchanged; the new findings are `clutter`, with new rule names.
+
 ## 2026-09-20 — 0.2.0: clear the directory review
 
 The declared `minAppVersion` was a guess, and `workspace.revealLeaf` only became
