@@ -1,12 +1,11 @@
 # Obsidian Proofread
 
-Draws proofreading findings on a note, so they can be worked through where the prose
-is rather than in a chat log. Hover a highlight for the rule behind it; click it to
-correct the text in place and mark it done.
-
-The plugin writes no prose of its own. The field in the card is seeded with the
-note's own words, and what replaces them is what the author types. A vocabulary
-finding offers a word and its definition — never a rewritten sentence.
+Draws proofreading findings on the note itself, so you work through them where the
+prose is rather than in a chat log. Hover a highlight for the rule behind it; click it
+to correct the text in place and mark it done. The plugin never writes prose for you:
+the correction field starts with the note's own words, what replaces them is what you
+type, and a vocabulary finding offers a word and its definition, never a rewritten
+sentence.
 
 ## Getting started
 
