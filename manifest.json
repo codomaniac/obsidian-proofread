@@ -1,7 +1,7 @@
 {
   "id": "proofread",
   "name": "Proofread",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "minAppVersion": "1.7.2",
   "description": "Highlights the findings of the proofread skill for Claude Code in a note, with the grammar, clutter or clarity rule behind each, and lets you fix them in place.",
   "author": "Piotr Rusin",
