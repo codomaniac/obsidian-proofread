@@ -14,7 +14,8 @@ The plugin does not proofread anything itself. It draws a report that something 
 wrote, and the `proofread` skill for [Claude Code](https://claude.com/claude-code),
 which lives in this repo, is what writes it. You need both.
 
-1. Install this plugin in the vault and enable it.
+1. In Obsidian, open **Settings → Community plugins → Browse**, search for
+   [Proofread](https://community.obsidian.md/plugins/proofread), then install and enable it.
 2. Install the skill from the [codomaniac marketplace](https://github.com/codomaniac/skills),
    in Claude Code:
 
@@ -137,7 +138,7 @@ npm test          # anchoring, parsing, position mapping
 npm run dev       # rebuild on change
 ```
 
-To install it into a vault, copy `main.js`, `manifest.json` and `styles.css` into
+To try a local build in a vault, copy `main.js`, `manifest.json` and `styles.css` into
 `<vault>/.obsidian/plugins/proofread/`, or symlink the repo there.
 
 ## Releasing it
