@@ -57,9 +57,9 @@ A malformed finding is dropped and counted rather than costing the run; the pane
 says how many.
 
 Anything can write that file. `skills/proofread/SKILL.md` is a Claude Code skill
-that does: it proofreads by the rules in Zinsser's *On Writing Well* and Williams's
-*Style: Lessons in Clarity and Grace*, and writes the result out instead of listing
-it. It is installed from the [codomaniac marketplace](https://github.com/codomaniac/skills).
+that does: it proofreads by the rules in Zinsser's *On Writing Well*, Williams's
+*Style: Lessons in Clarity and Grace* and Hacker and Sommers's *A Writer's Reference*,
+and writes the result out instead of listing it. It is installed from the [codomaniac marketplace](https://github.com/codomaniac/skills).
 
 ## Using it
 

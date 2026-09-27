@@ -1,7 +1,7 @@
 {
 	"name": "proofread",
 	"description": "Proofread a note and write the findings to the JSON report the Obsidian Proofread plugin reads.",
-	"version": "0.2.0",
+	"version": "0.3.1",
 	"author": {
 		"name": "Piotr Rusin",
 		"url": "https://codomaniac.com"

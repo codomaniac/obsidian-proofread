@@ -2,6 +2,16 @@
 
 Newest first. Each entry: what changed and why, three sentences at most.
 
+## 2026-09-26 — proofread skill 0.3.1: the handbook's rules, by name
+
+The skill now carries Hacker and Sommers's *A Writer's Reference* alongside Zinsser
+and Williams: the handbook's punctuation, agreement, usage and word-choice rules under
+`mechanical` and `clutter`, and its sentence-style chapter — parallelism, needed words,
+misplaced modifiers, mixed constructions, pronoun reference, shifts — under `clarity`,
+each with a fixed name so the report reads like the editing log the handbook asks the
+writer to keep. Only the skill changed, so the Claude Code plugin moves to 0.3.1 and
+the Obsidian plugin stays at 0.3.0; no release is needed.
+
 ## 2026-09-26 — 0.3.0: a fourth kind of finding, from Williams
 
 The proofread skill deferred to a standalone skill that no longer exists, so it now
