@@ -8,12 +8,63 @@ The plugin writes no prose of its own. The field in the card is seeded with the
 note's own words, and what replaces them is what the author types. A vocabulary
 finding offers a word and its definition — never a rewritten sentence.
 
+## Getting started
+
+The plugin does not proofread anything itself. It draws a report that something else
+wrote, and the `proofread` skill for [Claude Code](https://claude.com/claude-code),
+which lives in this repo, is what writes it. You need both.
+
+1. Install this plugin in the vault and enable it.
+2. Install the skill from the [codomaniac marketplace](https://github.com/codomaniac/skills),
+   in Claude Code:
+
+   ```sh
+   /plugin marketplace add codomaniac/skills
+   /plugin install proofread@codomaniac
+   ```
+
+3. Start Claude Code in the vault's root folder and name the note to check:
+
+   ```sh
+   /proofread:proofread content/posts/one.md
+   ```
+
+   The skill reads the note, never edits it, and writes its findings to
+   `.proofread/content/posts/one.md.json`.
+4. Open the note in Obsidian. The plugin checks for a new report every second, so the
+   highlights appear on their own; run the skill again after revising, and the
+   report is replaced.
+
+## What it checks
+
+Each finding falls into one of four categories, drawn in its own colour, and each
+names the rule it breaks. The rules come from three books.
+
+| Category | Colour | What it points at | Books |
+| --- | --- | --- | --- |
+| `mechanical` | red | grammar, punctuation and usage errors: articles, prepositions, agreement, verb forms, tense, commas, apostrophes, hyphens, confused words, dangling modifiers | Hacker and Sommers for the rules; Williams for which ones are real |
+| `vocabulary` | accent | a clause describing what one word covers, offered with its definition; a vague noun where the specific one is in hand | Hacker and Sommers |
+| `clutter` | yellow | words to cut or swap: filler, qualifiers, long words, nominalizations, needless passives, redundancy, hedges, intensifiers, jargon, clichés | Zinsser, Williams, Hacker and Sommers |
+| `clarity` | blue | sentences the reader has to untangle: a hidden doer, long openers, interruptions, noun stacks, broken parallelism, misplaced modifiers, unclear pronouns, shifts | Williams, Hacker and Sommers |
+
+- **William Zinsser, *On Writing Well*** — clutter: words doing no work.
+- **Joseph M. Williams, *Style: Lessons in Clarity and Grace*** — clarity: whether a
+  sentence's characters are its subjects and its actions its verbs. His sorting of
+  rules into real, social and invented keeps folklore, such as the split infinitive,
+  out of the report.
+- **Diana Hacker and Nancy Sommers, *A Writer's Reference*** — correctness: the
+  handbook's grammar, punctuation and usage rules, its glossary of confused words,
+  and its chapters on wordiness, exact language and sentence clarity.
+
+The same fault gets the same rule name on every run, so the report doubles as the
+editing log the handbook asks a writer to keep: the mistakes that keep coming back,
+each with the rule that corrects it.
+
 ## How it works
 
 A proofread run leaves a JSON report per note under `.proofread/`. The plugin reads
 the report for whichever note is open, anchors each finding to the text it quotes,
-and underlines it: red for mechanical errors, accent for a word being talked around,
-yellow for clutter, blue for a sentence that is unclear.
+and underlines it in its category's colour.
 
 Findings are anchored by the quoted fragment, not by line number — a model's line
 numbers drift, and the note moves under them anyway. Positions are then mapped
@@ -56,10 +107,7 @@ out of the file explorer, out of search and out of Obsidian's file index.
 A malformed finding is dropped and counted rather than costing the run; the panel
 says how many.
 
-Anything can write that file. `skills/proofread/SKILL.md` is a Claude Code skill
-that does: it proofreads by the rules in Zinsser's *On Writing Well*, Williams's
-*Style: Lessons in Clarity and Grace* and Hacker and Sommers's *A Writer's Reference*,
-and writes the result out instead of listing it. It is installed from the [codomaniac marketplace](https://github.com/codomaniac/skills).
+Anything else can write that file too; the skill is just the writer this repo ships.
 
 ## Using it
 

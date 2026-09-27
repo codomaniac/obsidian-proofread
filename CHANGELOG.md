@@ -2,6 +2,12 @@
 
 Newest first. Each entry: what changed and why, three sentences at most.
 
+## 2026-09-27 — say what writes the report, and what it checks
+
+The README now opens with how to set it up, since the plugin draws nothing without the
+Claude Code skill writing a report first, and lays out the four categories against the
+three books they come from. The manifest description names the skill too.
+
 ## 2026-09-26 — proofread skill 0.3.1: the handbook's rules, by name
 
 The skill now carries Hacker and Sommers's *A Writer's Reference* alongside Zinsser
