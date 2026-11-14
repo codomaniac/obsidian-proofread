@@ -2,6 +2,7 @@ import { type App, PluginSettingTab, Setting, type SettingDefinitionItem } from 
 
 import { CATEGORIES, type FindingCategory } from "../findings/schema.ts";
 import type ProofreadPlugin from "../main.ts";
+import { MODEL_ALIASES, modelFrom } from "../settings.ts";
 
 const CATEGORY_DESCRIPTIONS: Record<string, string> = {
 	mechanical: "Typos, articles, prepositions, agreement, commas.",
@@ -15,6 +16,14 @@ const FOLDER_DESC =
 	"A note at content/one.md is read from <folder>/content/one.md.json.";
 
 const POLL_DESC = "Seconds between checks. 0 leaves it to the reload command.";
+
+const CLAUDE_PATH_DESC =
+	"The Claude Code executable the Proofread button runs. " +
+	"Give the full path if Obsidian cannot find it on PATH.";
+
+const MODEL_DESC = "The model Claude Code proofreads with. Each alias runs the newest model of its line.";
+
+const MODEL_OPTIONS = Object.fromEntries(MODEL_ALIASES.map((alias) => [alias, alias]));
 
 const PANEL_DESC = "When a note turns out to have findings, without taking focus from it.";
 
@@ -56,6 +65,16 @@ export class ProofreadSettingTab extends PluginSettingTab {
 				desc: PANEL_DESC,
 				control: { type: "toggle", key: "autoOpenPanel", defaultValue: false },
 			},
+			{
+				name: "Claude Code path",
+				desc: CLAUDE_PATH_DESC,
+				control: { type: "text", key: "claudePath", defaultValue: "claude" },
+			},
+			{
+				name: "Model",
+				desc: MODEL_DESC,
+				control: { type: "dropdown", key: "model", defaultValue: "sonnet", options: MODEL_OPTIONS },
+			},
 		];
 	}
 
@@ -78,6 +97,8 @@ export class ProofreadSettingTab extends PluginSettingTab {
 		if (key === "sidecarFolder") settings.sidecarFolder = String(value).trim() || ".proofread";
 		else if (key === "pollSeconds") settings.pollSeconds = pollSecondsFrom(value);
 		else if (key === "autoOpenPanel") settings.autoOpenPanel = Boolean(value);
+		else if (key === "claudePath") settings.claudePath = String(value).trim() || "claude";
+		else if (key === "model") settings.model = modelFrom(value);
 
 		await this.plugin.saveState();
 	}
@@ -124,6 +145,29 @@ export class ProofreadSettingTab extends PluginSettingTab {
 				toggle.setValue(this.plugin.settings.autoOpenPanel).onChange(async (value) => {
 					await this.setControlValue("autoOpenPanel", value);
 				}),
+			);
+
+		new Setting(containerEl).setName("Claude Code").setHeading();
+
+		new Setting(containerEl)
+			.setName("Claude Code path")
+			.setDesc(CLAUDE_PATH_DESC)
+			.addText((text) =>
+				text.setValue(this.plugin.settings.claudePath).onChange(async (value) => {
+					await this.setControlValue("claudePath", value);
+				}),
+			);
+
+		new Setting(containerEl)
+			.setName("Model")
+			.setDesc(MODEL_DESC)
+			.addDropdown((dropdown) =>
+				dropdown
+					.addOptions(MODEL_OPTIONS)
+					.setValue(this.plugin.settings.model)
+					.onChange(async (value) => {
+						await this.setControlValue("model", value);
+					}),
 			);
 	}
 }

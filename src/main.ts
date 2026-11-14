@@ -1,6 +1,7 @@
 import { EditorView } from "@codemirror/view";
-import { MarkdownView, Notice, Plugin, TFile, debounce } from "obsidian";
+import { FileSystemAdapter, MarkdownView, Notice, Platform, Plugin, TFile, debounce } from "obsidian";
 
+import { runProofread } from "./claude.ts";
 import { anchorFindings } from "./findings/anchor.ts";
 import type { Finding } from "./findings/schema.ts";
 import { readSidecar, sidecarModified, sidecarPath } from "./findings/sidecar.ts";
@@ -8,7 +9,7 @@ import { FindingStore, type FindingStatus } from "./findings/store.ts";
 import { findingHover } from "./editor/hover.ts";
 import { pinFinding, proofreadPin } from "./editor/pin.ts";
 import { type EditorFinding, findingDecorations, findingsField, setFindings } from "./editor/state.ts";
-import { DEFAULT_SETTINGS, type ProofreadSettings } from "./settings.ts";
+import { DEFAULT_SETTINGS, type ProofreadSettings, modelFrom } from "./settings.ts";
 import { FindingsPanel, PANEL_VIEW_TYPE } from "./view/panel.ts";
 import { ProofreadSettingTab } from "./view/settings-tab.ts";
 
@@ -33,6 +34,12 @@ export default class ProofreadPlugin extends Plugin {
 	shown = 0;
 
 	private lastPoll = 0;
+
+	/** Notes with a Claude Code run in flight, so a second click does not start another. */
+	private running = new Set<string>();
+
+	/** Markdown views that already carry the Proofread button. */
+	private withButton = new WeakSet<MarkdownView>();
 
 	private readonly persist = debounce(() => void this.saveState(), 400, true);
 	private readonly refreshSoon = debounce(() => this.refreshPanels(), 300, true);
@@ -107,10 +114,70 @@ export default class ProofreadPlugin extends Plugin {
 			},
 		});
 
+		// Running Claude Code needs a shell, which only the desktop app has.
+		if (Platform.isDesktopApp) {
+			this.addCommand({
+				id: "proofread-note",
+				name: "Proofread this note with Claude Code",
+				checkCallback: (checking) => {
+					const file = this.app.workspace.getActiveFile();
+					if (!file || file.extension !== "md") return false;
+					if (!checking) void this.proofread(file);
+					return true;
+				},
+			});
+			this.registerEvent(this.app.workspace.on("layout-change", () => this.addButtons()));
+		}
+
 		this.app.workspace.onLayoutReady(() => {
 			const file = this.app.workspace.getActiveFile();
 			if (file) void this.loadFindings(file);
+			if (Platform.isDesktopApp) this.addButtons();
 		});
+	}
+
+	private addButtons(): void {
+		for (const leaf of this.app.workspace.getLeavesOfType("markdown")) {
+			const view = leaf.view;
+			if (!(view instanceof MarkdownView) || this.withButton.has(view)) continue;
+			this.withButton.add(view);
+
+			const button = view.addAction("spell-check", "Proofread", () => {
+				if (view.file) void this.proofread(view.file);
+			});
+			button.addClass("proofread-action");
+			button.createSpan({ text: "Proofread" });
+		}
+	}
+
+	/** Asks Claude Code to proofread `file`; the report arrives through polling. */
+	async proofread(file: TFile): Promise<void> {
+		const adapter = this.app.vault.adapter;
+		if (!(adapter instanceof FileSystemAdapter)) return;
+		if (this.running.has(file.path)) {
+			new Notice(`Already proofreading ${file.basename}`);
+			return;
+		}
+
+		this.running.add(file.path);
+		const started = new Notice(`Proofreading ${file.basename}…`, 0);
+		try {
+			await runProofread({
+				command: this.settings.claudePath,
+				model: this.settings.model,
+				cwd: adapter.getBasePath(),
+				notePath: file.path,
+				reportFolder: this.settings.sidecarFolder,
+			});
+			started.hide();
+			if (this.app.workspace.getActiveFile()?.path === file.path) await this.loadFindings(file, true);
+			else new Notice(`Proofread ${file.basename}`);
+		} catch (error) {
+			started.hide();
+			new Notice(`Proofread failed: ${error instanceof Error ? error.message : String(error)}`, 10000);
+		} finally {
+			this.running.delete(file.path);
+		}
 	}
 
 	private async restore(): Promise<void> {
@@ -121,6 +188,7 @@ export default class ProofreadPlugin extends Plugin {
 			...DEFAULT_SETTINGS,
 			...data.settings,
 			show: { ...DEFAULT_SETTINGS.show, ...data.settings?.show },
+			model: modelFrom(data.settings?.model),
 		};
 		this.store.load(data.files);
 	}

@@ -247,3 +247,12 @@
 	color: var(--text-faint);
 	font-size: var(--font-ui-small);
 }
+
+/* The header action shows its name, not just an icon, so it reads as a button. */
+.proofread-action {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--size-2-2);
+	width: auto;
+	font-size: var(--font-ui-small);
+}

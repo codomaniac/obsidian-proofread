@@ -2,6 +2,14 @@
 
 Newest first. Each entry: what changed and why, three sentences at most.
 
+## 2026-11-14 — 0.4.0: proofread from the note itself
+
+A Proofread button in the note's header, and a command, run the skill through the
+`claude` CLI on desktop, so a report no longer means switching to a terminal. Two
+settings go with it: the path to `claude`, for when Obsidian does not find it on PATH,
+and the model, picked from Claude Code's aliases and defaulting to sonnet. The run may
+read files but write only under the report folder, so it can never touch the note.
+
 ## 2026-09-27 — 0.3.1: say what writes the report, and what it checks
 
 The README now opens with how to set it up, since the plugin draws nothing without the

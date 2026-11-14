@@ -31,6 +31,9 @@ which lives in this repo, is what writes it. You need both.
 
    The skill reads the note, never edits it, and writes its findings to
    `.proofread/content/posts/one.md.json`.
+
+   On desktop, the **Proofread** button in the note's header does the same: it runs
+   `claude` in the vault with the model chosen in the plugin's settings.
 4. Open the note in Obsidian. The plugin checks for a new report every second, so the
    highlights appear on their own; run the skill again after revising, and the
    report is replaced.
