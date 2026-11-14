@@ -9,6 +9,9 @@ on:
 
 permissions:
   contents: write
+  # Both for the provenance attestation: signing via OIDC, then storing it.
+  id-token: write
+  attestations: write
 
 jobs:
   release:
@@ -24,6 +27,14 @@ jobs:
       - run: npm ci
 
       - run: npm run build
+
+      - name: Attest that the release files were built here
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: |
+            main.js
+            manifest.json
+            styles.css
 
       - name: Check that the manifest agrees with the tag
         run: |

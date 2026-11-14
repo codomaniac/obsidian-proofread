@@ -2,6 +2,12 @@
 
 Newest first. Each entry: what changed and why, three sentences at most.
 
+## 2026-11-14 — 0.4.2: attested release files
+
+The release workflow now attests `main.js`, `manifest.json` and `styles.css` with
+GitHub's build provenance, so anyone can check they were built from this repository
+with `gh attestation verify`. No plugin code changed.
+
 ## 2026-11-14 — 0.4.1: screenshots in the README
 
 The README now shows the plugin: a note with its findings, the hover and click card of
