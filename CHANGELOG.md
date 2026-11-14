@@ -2,6 +2,13 @@
 
 Newest first. Each entry: what changed and why, three sentences at most.
 
+## 2026-11-14 — 0.4.1: screenshots in the README
+
+The README now shows the plugin: a note with its findings, the hover and click card of
+each category, the panel and the settings, taken from a demo note rather than a real
+one. It also covers the Proofread button and the settings 0.4.0 added. No plugin code
+changed; the release is what refreshes the page in the plugin directory.
+
 ## 2026-11-14 — 0.4.0: proofread from the note itself
 
 A Proofread button in the note's header, and a command, run the skill through the
